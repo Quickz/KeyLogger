@@ -4,18 +4,18 @@ from tkinter import *
 
 def on_release(event):
     # print(event.name)
-    global keystroke_count
-    keystroke_count += 1
+    global total_key_count
+    total_key_count += 1
 
     add_key_press(event.name)
-    # print(keys_pressed)
+    # print(pressed_key_counts)
 
     list_box.delete(0, END)
-    for key in keys_pressed:
-        key_data = key + ': ' + str(keys_pressed[key]) + '\n'
+    for key in pressed_key_counts:
+        key_data = key + ': ' + str(pressed_key_counts[key]) + '\n'
         list_box.insert(END, key_data)
 
-    label_text.set('Keystrokes: ' + str(keystroke_count))
+    label_text.set('Keystrokes: ' + str(total_key_count))
 
 
 def start_logging_keys():
@@ -23,18 +23,19 @@ def start_logging_keys():
 
 
 def add_key_press(key):
-    global keys_pressed
-    if key not in keys_pressed:
-        keys_pressed[key] = 1
+    global pressed_key_counts
+    global logged_keys
+    if key not in pressed_key_counts:
+        pressed_key_counts[key] = 1
     else:
-        keys_pressed[key] += 1
+        pressed_key_counts[key] += 1
+    logged_keys += key + ' '
 
 
-keys_pressed = {}
-keystroke_count = 0
+pressed_key_counts = {}
+total_key_count = 0
+logged_keys = ''
 
-
-# start_logging_keys()
 window = Tk()
 
 window.title('KeyLogger')
@@ -56,6 +57,29 @@ scrollbar.config(command=list_box.yview)
 scrollbar.pack(side='right', fill='y')
 
 list_box.config(yscrollcommand=scrollbar.set)
+
+
+def donothing():
+    pass
+
+
+menubar = Menu(window)
+
+# File
+filemenu = Menu(menubar, tearoff=0)
+menubar.add_cascade(label="File", menu=filemenu)
+
+filemenu.add_command(label="Save...", command=donothing)
+filemenu.add_command(label="Exit", command=window.quit)
+
+# Help
+helpmenu = Menu(menubar, tearoff=0)
+menubar.add_cascade(label="Help", menu=helpmenu)
+
+helpmenu.add_command(label="License...", command=donothing)
+helpmenu.add_command(label="About...", command=donothing)
+
+window.config(menu=menubar)
 
 start_logging_keys()
 window.mainloop()
