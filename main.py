@@ -1,6 +1,6 @@
 import keyboard
 from tkinter import *
-
+from tkinter import filedialog
 
 def on_release(event):
     # print(event.name)
@@ -30,6 +30,23 @@ def add_key_press(key):
     else:
         pressed_key_counts[key] += 1
     logged_keys += key + ' '
+
+
+# saves the pressed key counts data
+# in a JSON file or some other format
+def save_data():
+
+    file = filedialog.asksaveasfile(
+        mode='w',
+        initialdir='/',
+        title='Save',
+        filetypes=(('JSON (*.json)', '*.txt'), ('All files', '*.*')),
+        defaultextension='.json'
+    )
+
+    if file:
+        file.write(str(pressed_key_counts))
+        file.close()
 
 
 pressed_key_counts = {}
@@ -69,7 +86,7 @@ menubar = Menu(window)
 filemenu = Menu(menubar, tearoff=0)
 menubar.add_cascade(label="File", menu=filemenu)
 
-filemenu.add_command(label="Save...", command=donothing)
+filemenu.add_command(label="Save...", command=save_data)
 filemenu.add_command(label="Exit", command=window.quit)
 
 # Help
