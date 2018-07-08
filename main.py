@@ -49,9 +49,50 @@ def save_data():
         file.close()
 
 
+def open_license_page():
+    global license_page_is_open
+    if license_page_is_open is True:
+        return
+
+    license_window = Toplevel()
+    license_window.title('License')
+    license_window.geometry('630x400')
+
+    # adding callback to license window closing
+    license_window.protocol(
+        'WM_DELETE_WINDOW',
+        lambda: on_license_page_close(license_window)
+    )
+
+    frame = Frame(license_window)
+    frame.pack()
+
+    text = Text(frame, width=80, height=25)
+
+    license_file = open('LICENSE', 'r')
+    if license_file:
+        text.insert(INSERT, license_file.read())
+        license_file.close()
+    else:
+        text.insert(INSERT, 'Error in loading the license')
+
+    text.config(state=DISABLED)
+    text.pack()
+
+    license_page_is_open = True
+
+
+def on_license_page_close(license_window):
+    global license_page_is_open
+    license_page_is_open = False
+    license_window.destroy()
+
+
 pressed_key_counts = {}
 total_key_count = 0
 logged_keys = ''
+
+license_page_is_open = False
 
 window = Tk()
 
@@ -93,10 +134,11 @@ filemenu.add_command(label="Exit", command=window.quit)
 helpmenu = Menu(menubar, tearoff=0)
 menubar.add_cascade(label="Help", menu=helpmenu)
 
-helpmenu.add_command(label="License...", command=donothing)
+helpmenu.add_command(label="License...", command=open_license_page)
 helpmenu.add_command(label="About...", command=donothing)
 
 window.config(menu=menubar)
+
 
 start_logging_keys()
 window.mainloop()
