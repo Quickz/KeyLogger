@@ -1,4 +1,5 @@
 import keyboard
+import json
 from tkinter import *
 from tkinter import filedialog
 
@@ -45,7 +46,8 @@ def save_data():
     )
 
     if file:
-        file.write(str(pressed_key_counts))
+        data = json.dumps(pressed_key_counts, indent=4)
+        file.write(data)
         file.close()
 
 
