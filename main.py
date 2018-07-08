@@ -88,11 +88,50 @@ def on_license_page_close(license_window):
     license_window.destroy()
 
 
+def open_about_page():
+    global about_page_is_open
+    if about_page_is_open is True:
+        return
+
+    about_window = Toplevel()
+    about_window.title('About')
+    about_window.geometry('430x250')
+
+    # adding callback to about window closing
+    about_window.protocol(
+        'WM_DELETE_WINDOW',
+        lambda: on_about_page_close(about_window)
+    )
+
+    frame = Frame(about_window)
+    frame.pack()
+
+    text = Text(frame, width=55, height=17)
+    text.insert(
+        INSERT,
+        'An application that logs the pressed keys and '
+        'counts the number of times each of them have been used.\n'
+        'Source code: https://github.com/Quickz/KeyLogger'
+    )
+
+    text.config(state=DISABLED)
+    text.pack()
+
+    about_page_is_open = True
+
+
+def on_about_page_close(about_window):
+    global about_page_is_open
+    about_page_is_open = False
+    about_window.destroy()
+
+
 pressed_key_counts = {}
 total_key_count = 0
 logged_keys = ''
 
 license_page_is_open = False
+about_page_is_open = False
 
 window = Tk()
 
@@ -135,7 +174,7 @@ helpmenu = Menu(menubar, tearoff=0)
 menubar.add_cascade(label="Help", menu=helpmenu)
 
 helpmenu.add_command(label="License...", command=open_license_page)
-helpmenu.add_command(label="About...", command=donothing)
+helpmenu.add_command(label="About...", command=open_about_page)
 
 window.config(menu=menubar)
 
