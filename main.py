@@ -3,6 +3,7 @@ import json
 from tkinter import *
 from tkinter import filedialog
 
+
 def on_release(event):
     # print(event.name)
     global total_key_count
@@ -30,7 +31,7 @@ def add_key_press(key):
         pressed_key_counts[key] = 1
     else:
         pressed_key_counts[key] += 1
-    logged_keys += key + ' '
+    logged_keys.append(key)
 
 
 # saves the pressed key counts data
@@ -46,7 +47,12 @@ def save_data():
     )
 
     if file:
-        data = json.dumps(pressed_key_counts, indent=4)
+        data = {
+            'key counts': pressed_key_counts,
+            'logged keys': logged_keys
+        }
+        data = json.dumps(data, indent=4)
+
         file.write(data)
         file.close()
 
@@ -130,7 +136,7 @@ def on_about_page_close(about_window):
 
 pressed_key_counts = {}
 total_key_count = 0
-logged_keys = ''
+logged_keys = []
 
 license_page_is_open = False
 about_page_is_open = False
