@@ -5,6 +5,11 @@ from tkinter import filedialog
 
 
 def on_release(event):
+
+    global file_dialog_is_open
+    if file_dialog_is_open:
+        return
+
     # print(event.name)
     global total_key_count
     total_key_count += 1
@@ -25,6 +30,7 @@ def start_logging_keys():
 
 
 def add_key_press(key):
+
     global pressed_key_counts
     global logged_keys
     if key not in pressed_key_counts:
@@ -34,9 +40,13 @@ def add_key_press(key):
     logged_keys.append(key)
 
 
+# opens a save dialog window and
 # saves the pressed key counts data
 # in a JSON file or some other format
 def save_data():
+
+    global file_dialog_is_open
+    file_dialog_is_open = True
 
     file = filedialog.asksaveasfile(
         mode='w',
@@ -55,6 +65,8 @@ def save_data():
 
         file.write(data)
         file.close()
+
+    file_dialog_is_open = False
 
 
 def open_license_page():
@@ -140,6 +152,7 @@ logged_keys = []
 
 license_page_is_open = False
 about_page_is_open = False
+file_dialog_is_open = False
 
 window = Tk()
 
