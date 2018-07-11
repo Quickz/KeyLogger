@@ -7,7 +7,8 @@ from tkinter import filedialog
 def on_release(event):
 
     global file_dialog_is_open
-    if file_dialog_is_open:
+    global app_paused
+    if file_dialog_is_open or app_paused:
         return
 
     # print(event.name)
@@ -146,6 +147,18 @@ def on_about_page_close(about_window):
     about_window.destroy()
 
 
+# temporarily stops the app
+# from logging the keyboard input
+# or resumes it if called again
+def on_pause_button_click():
+    global app_paused
+    app_paused = not app_paused
+    if app_paused:
+        pause_button.configure(text='Resume')
+    else:
+        pause_button.configure(text='Pause')
+
+
 pressed_key_counts = {}
 total_key_count = 0
 logged_keys = []
@@ -153,6 +166,7 @@ logged_keys = []
 license_page_is_open = False
 about_page_is_open = False
 file_dialog_is_open = False
+app_paused = False
 
 window = Tk()
 
@@ -198,6 +212,18 @@ helpmenu.add_command(label="License...", command=open_license_page)
 helpmenu.add_command(label="About...", command=open_about_page)
 
 window.config(menu=menubar)
+
+
+# Bottom
+bottom_frame = Frame(window)
+bottom_frame.pack()
+
+pause_button = Button(
+    bottom_frame,
+    text='Pause',
+    width=7,
+    command=on_pause_button_click)
+pause_button.pack()
 
 
 start_logging_keys()
