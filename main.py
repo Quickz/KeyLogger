@@ -2,6 +2,8 @@ import keyboard
 import json
 from tkinter import *
 from tkinter import filedialog
+from about_page import AboutPage
+from license_page import LicensePage
 
 
 def on_release(event):
@@ -70,83 +72,6 @@ def save_data():
     file_dialog_is_open = False
 
 
-def open_license_page():
-    global license_page_is_open
-    if license_page_is_open is True:
-        return
-
-    license_window = Toplevel()
-    license_window.title('License')
-    license_window.geometry('630x400')
-
-    # adding callback to license window closing
-    license_window.protocol(
-        'WM_DELETE_WINDOW',
-        lambda: on_license_page_close(license_window)
-    )
-
-    frame = Frame(license_window)
-    frame.pack()
-
-    text = Text(frame, width=80, height=25)
-
-    license_file = open('LICENSE', 'r')
-    if license_file:
-        text.insert(INSERT, license_file.read())
-        license_file.close()
-    else:
-        text.insert(INSERT, 'Error in loading the license')
-
-    text.config(state=DISABLED)
-    text.pack()
-
-    license_page_is_open = True
-
-
-def on_license_page_close(license_window):
-    global license_page_is_open
-    license_page_is_open = False
-    license_window.destroy()
-
-
-def open_about_page():
-    global about_page_is_open
-    if about_page_is_open is True:
-        return
-
-    about_window = Toplevel()
-    about_window.title('About')
-    about_window.geometry('430x250')
-
-    # adding callback to about window closing
-    about_window.protocol(
-        'WM_DELETE_WINDOW',
-        lambda: on_about_page_close(about_window)
-    )
-
-    frame = Frame(about_window)
-    frame.pack()
-
-    text = Text(frame, width=55, height=17)
-    text.insert(
-        INSERT,
-        'An application that logs the pressed keys and '
-        'counts the number of times each of them have been used.\n'
-        'Source code: https://github.com/Quickz/KeyLogger'
-    )
-
-    text.config(state=DISABLED)
-    text.pack()
-
-    about_page_is_open = True
-
-
-def on_about_page_close(about_window):
-    global about_page_is_open
-    about_page_is_open = False
-    about_window.destroy()
-
-
 # temporarily stops the app
 # from logging the keyboard input
 # or resumes it if called again
@@ -163,8 +88,6 @@ pressed_key_counts = {}
 total_key_count = 0
 logged_keys = []
 
-license_page_is_open = False
-about_page_is_open = False
 file_dialog_is_open = False
 app_paused = False
 
@@ -208,8 +131,8 @@ filemenu.add_command(label="Exit", command=window.quit)
 helpmenu = Menu(menubar, tearoff=0)
 menubar.add_cascade(label="Help", menu=helpmenu)
 
-helpmenu.add_command(label="License...", command=open_license_page)
-helpmenu.add_command(label="About...", command=open_about_page)
+helpmenu.add_command(label="License...", command=LicensePage.open)
+helpmenu.add_command(label="About...", command=AboutPage.open)
 
 window.config(menu=menubar)
 
