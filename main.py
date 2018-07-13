@@ -26,8 +26,26 @@ def update_key_list():
 
     # filling it up with new data
     for key in pressed_key_counts:
-        key_data = key + ': ' + str(pressed_key_counts[key]) + '\n'
+
+        key_percentage = get_key_percentages(key)
+
+        if key_percentage <= 0.01:
+            key_percentage = 'less than 0.01'
+        else:
+            key_percentage = round(key_percentage, 2)
+
+        key_data = key + ': ' +\
+            str(pressed_key_counts[key]) + ', ' +\
+            str(key_percentage) + '%\n'
+
         list_box.insert(END, key_data)
+
+
+# tells what percentage
+# does the selected key take
+# in the key list
+def get_key_percentages(key):
+    return pressed_key_counts[key] / total_key_count * 100
 
 
 def start_logging_keys():
