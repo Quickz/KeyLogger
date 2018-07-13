@@ -13,19 +13,21 @@ def on_release(event):
     if file_dialog_is_open or app_paused:
         return
 
-    # print(event.name)
-    global total_key_count
-    total_key_count += 1
-
     add_key_press(event.name)
-    # print(pressed_key_counts)
+    update_key_list()
+    label_text.set('Keystrokes: ' + str(total_key_count))
 
+
+# updates the list box that
+# contains the key counts
+def update_key_list():
+    # clearing the list
     list_box.delete(0, END)
+
+    # filling it up with new data
     for key in pressed_key_counts:
         key_data = key + ': ' + str(pressed_key_counts[key]) + '\n'
         list_box.insert(END, key_data)
-
-    label_text.set('Keystrokes: ' + str(total_key_count))
 
 
 def start_logging_keys():
@@ -36,10 +38,18 @@ def add_key_press(key):
 
     global pressed_key_counts
     global logged_keys
+    global total_key_count
+
+    total_key_count += 1
+
+    # counting how many times
+    # each key has been pressed
     if key not in pressed_key_counts:
         pressed_key_counts[key] = 1
     else:
         pressed_key_counts[key] += 1
+
+    # saving the actual key that was pressed
     logged_keys.append(key)
 
 
