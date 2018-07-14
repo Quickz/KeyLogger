@@ -12,6 +12,7 @@ class AboutPage:
 
         about_window = Toplevel()
         about_window.title('About')
+        about_window.iconbitmap(r'icon.ico')
         about_window.geometry('430x250')
 
         # adding callback to about window closing

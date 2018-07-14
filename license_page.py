@@ -12,6 +12,7 @@ class LicensePage:
 
         license_window = Toplevel()
         license_window.title('License')
+        license_window.iconbitmap(r'icon.ico')
         license_window.geometry('630x400')
 
         # adding callback to license window closing

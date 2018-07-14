@@ -122,7 +122,8 @@ app_paused = False
 window = Tk()
 
 window.title('KeyLogger')
-window.geometry('300x200')
+window.iconbitmap(r'icon.ico')
+window.geometry('300x230')
 
 frame = Frame(window)
 frame.pack()
